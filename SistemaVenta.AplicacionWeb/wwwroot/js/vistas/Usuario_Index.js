@@ -124,6 +124,7 @@ $("#btnGuardar").click(function () {
         const mensaje = `Debe completar el campo :"${inputs_sin_valor[0].name}"`;
         toastr.warning("", mensaje)
         $(`input[name]="${inputs_sin_valor[0].name}"`).focus()
+        return;
     }
 
     //guardar 
@@ -140,7 +141,7 @@ $("#btnGuardar").click(function () {
 
     const formData = new FormData();
 
-    formData.append("foto",inputFoto.files[0])
+    formData.append("foto",inputFoto.file[0])
     formData.append("modelo", JSON.stringify(modelo))
 
     $("#modalData").find("div.modal-content").LoadingOverlay("show");

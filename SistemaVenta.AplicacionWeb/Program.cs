@@ -16,9 +16,6 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 var app = builder.Build();
 
-
-
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
