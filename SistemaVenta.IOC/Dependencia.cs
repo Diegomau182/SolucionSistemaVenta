@@ -48,6 +48,13 @@ namespace SistemaVenta.IOC
             // agregar el servicio de Negocios
             services.AddScoped<INegocioService, NegocioService>();
 
+            // agregar el servicio de Categoria
+            services.AddScoped<ICategoriaService, CategoriaService>();
+
+            // agregar el servicio de Producto
+            services.AddScoped<IProductoService, ProductoService>();
+
+
         }
     }
 }
