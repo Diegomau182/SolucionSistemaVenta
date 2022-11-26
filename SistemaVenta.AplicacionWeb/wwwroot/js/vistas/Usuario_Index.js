@@ -141,7 +141,7 @@ $("#btnGuardar").click(function () {
 
     const formData = new FormData();
 
-    formData.append("foto",inputFoto.file[0])
+    formData.append("foto",inputFoto.files[0])
     formData.append("modelo", JSON.stringify(modelo))
 
     $("#modalData").find("div.modal-content").LoadingOverlay("show");

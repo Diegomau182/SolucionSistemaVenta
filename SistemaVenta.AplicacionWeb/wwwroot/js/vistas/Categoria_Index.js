@@ -4,6 +4,8 @@
     esActivo: 1
 }
 
+let tablaData;
+
 $(document).ready(function () {
 
     //mostrar los datos de la tabla
@@ -88,15 +90,14 @@ $("#btnGuardar").click(function () {
     modelo["descripcion"] = $("#txtDescripcion").val()
     modelo["esActivo"] = parseInt($("#cboEstado").val())
 
-    const formData = new FormData();
-    formData.append("modelo", JSON.stringify(modelo))
 
     $("#modalData").find("div.modal-content").LoadingOverlay("show");
 
     if (modelo.idCategoria == 0) {
         fetch('/Categoria/Crear', {
             method: "POST",
-            body: formData
+            headers: {"Content-Type":"application/json;  charset=uft-8"},
+            body: JSON.stringify(modelo)
         })
             .then(response => {
                 $("#modalData").find("div.modal-content").LoadingOverlay("hide");
@@ -118,7 +119,8 @@ $("#btnGuardar").click(function () {
         //Metodo editar
         fetch('/Categoria/Editar', {
             method: "PUT",
-            body: formData
+            headers: { "Content-Type": "application/json;  charset=uft-8" },
+            body: JSON.stringify(modelo)
         })
             .then(response => {
                 $("#modalData").find("div.modal-content").LoadingOverlay("hide");
