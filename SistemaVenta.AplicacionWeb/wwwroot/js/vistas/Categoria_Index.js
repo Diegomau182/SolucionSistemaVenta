@@ -49,9 +49,9 @@ $(document).ready(function () {
                 title: '',
                 filename: 'Reporte Categoria',
                 exportOptions: {
-                    columns: [0,1,2,3]
+                    columns: [1,2]
                 }
-            }, 'pageLength'
+            }, 'pageLength' 
         ],
         language: {
             url: "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"
@@ -65,23 +65,21 @@ function mostrarModal(modelo = MODELO_BASE) {
     $("#txtDescripcion").val(modelo.descripcion)
     $("#cboEstado").val(modelo.esActivo)
 
+
     $("#modalData").modal("show")
 }
-//modal para guardar 
+
 $("#btnNuevo").click(function () { mostrarModal() })
+
 
 
 //Metodo guardar
 $("#btnGuardar").click(function () {
     //vsalidacion de los inputs
-    const inputs = $("input.input-validar").serializeArray();
-    const inputs_sin_valor = inputs.filter((item) => item.value.trim() == "");
-
-    if (inputs_sin_valor.length > 0) {
-        const mensaje = `Debe completar el campo :"${inputs_sin_valor[0].name}"`;
-        toastr.warning("", mensaje)
-        $(`input[name]="${inputs_sin_valor[0].name}"`).focus()
-        return;
+    if ($("#txtDescripcion").val().trim() == "") {
+        toastr.warning("", "Debe completar el campo descripcion")
+        $("#txtDescripcion").focus()
+        return
     }
 
     //guardar 
@@ -96,8 +94,8 @@ $("#btnGuardar").click(function () {
     if (modelo.idCategoria == 0) {
         fetch('/Categoria/Crear', {
             method: "POST",
-            headers: {"Content-Type":"application/json;  charset=uft-8"},
-            body: JSON.stringify(modelo)
+            headers: {"Content-Type":"application/json; charset=utf-8"},
+            body:JSON.stringify(modelo)
         })
             .then(response => {
                 $("#modalData").find("div.modal-content").LoadingOverlay("hide");
@@ -109,7 +107,7 @@ $("#btnGuardar").click(function () {
 
                     tablaData.row.add(responseJson.objeto).draw(false)
                     $("#modalData").modal("hide")
-                    swal("Listo!", "La Categoria fue creada", "success")
+                    swal("Listo!", "La categoria fue creada", "success")
                 } else {
                     swal("Fallo", responseJson.mensaje, "error")
                 }
@@ -119,7 +117,7 @@ $("#btnGuardar").click(function () {
         //Metodo editar
         fetch('/Categoria/Editar', {
             method: "PUT",
-            headers: { "Content-Type": "application/json;  charset=uft-8" },
+            headers: { "Content-Type": "application/json; charset=utf-8" },
             body: JSON.stringify(modelo)
         })
             .then(response => {
@@ -133,7 +131,7 @@ $("#btnGuardar").click(function () {
                     tablaData.row(filaSelecionada).data(responseJson.objeto).draw(false)
                     filaSelecionada = null;
                     $("#modalData").modal("hide")
-                    swal("Listo!", "La Categoria fue Modificada", "success")
+                    swal("Listo!", "La Cateogoria fue Modificada", "success")
                 } else {
                     swal("Fallo", responseJson.mensaje, "error")
                 }
@@ -142,22 +140,18 @@ $("#btnGuardar").click(function () {
 
 })
 
-
-//editar
-
 let filaSelecionada;
 $("#tbdata tbody").on("click", ".btn-editar", function () {
-
     if ($(this).closest("tr").hasClass("child")) {
-        fila = $(this).closest("tr").prev();
+        filaSelecionada = $(this).closest("tr").prev();
     } else {
-        fila = $(this).closest("tr")
+        filaSelecionada = $(this).closest("tr")
     }
 
     const data = tablaData.row(filaSelecionada).data()
-
     mostrarModal(data);
 })
+
 
 //eliminar
 $("#tbdata tbody").on("click", ".btn-eliminar", function () {
@@ -172,7 +166,7 @@ $("#tbdata tbody").on("click", ".btn-eliminar", function () {
 
     swal({
         title: "¿Está Seguro?",
-        Text: `Eliminar la Categoria "${data.descripcion}"`,
+        Text: `Eliminar Categoria "${data.descripcion}"`,
         type: "warning",
         showCancelButton: true,
         confirmButtonClass: "btn-danger",
@@ -186,7 +180,7 @@ $("#tbdata tbody").on("click", ".btn-eliminar", function () {
             if (respuesta) {
 
                 $(".showSweetAlert").LoadingOverlay("show");
-                fetch(`/Categoria/Eliminar?idCategoria=${data.iCategoria}`, {
+                fetch(`/Categoria/Eliminar?idCategoria=${data.idCategoria}`, {
                     method: "DELETE"
                 })
                     .then(response => {

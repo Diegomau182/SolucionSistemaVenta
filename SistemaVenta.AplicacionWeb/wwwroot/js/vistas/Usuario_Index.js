@@ -199,13 +199,12 @@ let filaSelecionada;
 $("#tbdata tbody").on("click", ".btn-editar", function () {
 
     if ($(this).closest("tr").hasClass("child")) {
-        fila = $(this).closest("tr").prev();
+        filaSelecionada = $(this).closest("tr").prev();
     } else {
-        fila = $(this).closest("tr")
+        filaSelecionada = $(this).closest("tr")
     }
 
     const data = tablaData.row(filaSelecionada).data()
-
     mostrarModal(data);
 })
 
